@@ -16,9 +16,14 @@ ul > li {
     list-style: none;
 }
 
+a{
+    text-decoration: none;
+}
+
 .App {
     text-align: center;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
@@ -54,6 +59,7 @@ ul > li {
     width: 25%;
     display: flex;
     flex-direction: column;
+    min-height: 500px;
 }
 
 .todo {
@@ -82,10 +88,10 @@ ul > li {
 }
 
 .page-item {
-    padding: 10px;
     background-color: #282c34;
     border-radius: 3px;
     margin: 3px;
+    position: relative;
 }
 
 .current-page {
@@ -94,6 +100,10 @@ ul > li {
 
 .page-link {
     color: aliceblue;
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 15px;
 }
 
 @keyframes App-logo-spin {

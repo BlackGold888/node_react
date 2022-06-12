@@ -46,11 +46,11 @@ export const store = configureStore({
 
 store.subscribe(() => console.log(`Getting data ${ JSON.stringify(store.getState()) }`));
 
-store.dispatch(addTodo({ name: 'BlackGold', email: 'blackgold@gmail.com', text: 'Todo 1', status: false, }))
-store.dispatch(addTodo({ name: 'BlackGold', email: 'blackgold@gmail.com', text: 'Todo 2', status: true, }))
-store.dispatch(addTodo({ name: 'BlackGold', email: 'blackgold@gmail.com', text: 'Todo 3', status: false, }))
-store.dispatch(addTodo({ name: 'BlackGold', email: 'blackgold@gmail.com', text: 'Todo 1', status: true, }))
-store.dispatch(addTodo({ name: 'BlackGold', email: 'blackgold@gmail.com', text: 'Todo 1', status: true, }))
+store.dispatch(addTodo({ name: 'BlackGold', email: 'blackgold@gmail.com', text: 'Todo BlackGold 1', status: false, }))
+store.dispatch(addTodo({ name: 'Black', email: 'black@gmail.com', text: 'Todo Black 2', status: true, }))
+store.dispatch(addTodo({ name: 'Akim', email: 'akim@gmail.com', text: 'Todo Akim 3', status: false, }))
+store.dispatch(addTodo({ name: 'Altair', email: 'altair@gmail.com', text: 'Todo Altair 1', status: true, }))
+store.dispatch(addTodo({ name: 'Ali', email: 'ali@gmail.com', text: 'Todo Ali 1', status: true, }))
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
