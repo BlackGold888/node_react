@@ -5,22 +5,6 @@ import App from './App';
 import { createSlice, configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 
-export const counterSlice = createSlice({
-    name: 'counter',
-    initialState: {
-        value: 0,
-        name: 'ssadasd'
-    },
-    reducers: {
-        incremented: (state) => {
-            state.value += 1;
-        },
-        decremented: (state) => {
-            state.value -= 1;
-        }
-    }
-});
-
 export const TodoListSlice = createSlice({
     name: 'todoList',
     initialState: {
