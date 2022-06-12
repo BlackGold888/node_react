@@ -38,8 +38,6 @@ export const TodoListSlice = createSlice({
 
 export const { addTodo, removeTodo } = TodoListSlice.actions;
 
-export const { incremented, decremented } = counterSlice.actions;
-
 export const store = configureStore({
     reducer: TodoListSlice.reducer,
 })

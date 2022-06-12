@@ -1,28 +1,30 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
-import { addTodo, store } from '../index';
-import ReactPaginate from 'react-paginate';
 import Pagination from './Pagination';
+import { useNavigate } from 'react-router-dom';
 
-function TodoList(props) {
+function TodoList() {
     const todos = useSelector((state) => state.todos);
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [text, setText] = useState('');
-    const [search, setSearch] = useState('');
-
+    const [filteredTodos, setFilteredTodos] = useState(todos);
     const [currentPage, setCurrentPage] = useState(1);
     const [todosPerPage] = useState(3);
 
-    const renderTodos = () => {
-        let filteredTodos = [];
-        if (search.length > 1) {
-            filteredTodos = todos.filter(todo => todo.name.includes(search) || todo.email.includes(search) || todo.text.includes(search));
-        }else {
-            filteredTodos = [...todos];
-        }
+    const navigate = useNavigate();
 
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+    const searchTodos = (query) => {
+        let tempArr = [];
+        if (query.length > 0) {
+            tempArr = filteredTodos.filter(todo => todo.name.includes(query) || todo.email.includes(query) || todo.text.includes(query));
+        }else {
+            tempArr = [...todos];
+        }
+        console.log(tempArr.length);
+        setFilteredTodos(tempArr);
+    }
+
+    const renderTodos = () => {
         const indexOfLastTodo = currentPage * todosPerPage;
         const indexOfFirstTodo = indexOfLastTodo - todosPerPage;
         const currentTodos = filteredTodos.slice(indexOfFirstTodo, indexOfLastTodo);
@@ -33,42 +35,11 @@ function TodoList(props) {
             <p>Status: <input type="checkbox" checked={ todo.status } readOnly={ true }/></p>
         </li>);
     };
-
-    const handleSearch = (e) => setSearch(e.target.value);
-    const handleName = (e) => setName(e.target.value);
-    const handleEmail = (e) => setEmail(e.target.value);
-    const handleText = (e) => setText(e.target.value);
-
-    const validateEmail = (email) => {
-        let re = /\S+@\S+\.\S+/;
-        return re.test(email);
-    };
-
-    function addNewTodo() {
-        if (name.length < 3) {
-            toast.error('Мин длина Имени 3 символа');
-        } else if (!validateEmail(email)) {
-            toast.error('Не корректно введена почта');
-        } else if (text.length < 3) {
-            toast.error('Мин длина Текста 3 символа');
-        } else {
-            store.dispatch(addTodo({ name, email, text, status: false, }));
-            toast.success('Задача добавлена');
-        }
-    }
-
-    const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
-
     return (
         <>
             <ul className={ 'todo_container' }>
                 <li>
-                    <input type="text" onChange={ (e) => handleSearch(e) } placeholder={ 'search' }/>
-                    <input type="text" onChange={ (e) => handleName(e) } placeholder={ 'Name' }/>
-                    <input type="text" onChange={ (e) => handleEmail(e) } placeholder={ 'Email' }/>
-                    <input type="text" onChange={ (e) => handleText(e) } placeholder={ 'Todo text' }/>
-                    <button onClick={ () => addNewTodo() }>Add</button>
+                    <input type="text" onChange={ (e) => searchTodos(e.target.value) } placeholder={ 'search' }/>
                 </li>
                 { renderTodos() }
             </ul>
@@ -78,6 +49,7 @@ function TodoList(props) {
                 totalTodos={ todos.length }
                 currentPage={ currentPage }
             />
+            <button onClick={() => navigate('/add')}>Add new Todo</button>
         </>
 
     );
