@@ -1,13 +1,19 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Pagination from './Pagination';
 import { useNavigate } from 'react-router-dom';
 
 function TodoList() {
     const todos = useSelector((state) => state.todos);
-    const [filteredTodos, setFilteredTodos] = useState(todos);
+    const [filteredTodos, setFilteredTodos] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [todosPerPage] = useState(3);
+
+    useEffect(() => {
+        if (!filteredTodos.length && todos.length) {
+            setFilteredTodos(todos);
+        }
+    })
 
     const navigate = useNavigate();
 
@@ -20,11 +26,11 @@ function TodoList() {
         }else {
             tempArr = [...todos];
         }
-        console.log(tempArr.length);
         setFilteredTodos(tempArr);
     }
 
     const renderTodos = () => {
+        console.log(todos.length);
         const indexOfLastTodo = currentPage * todosPerPage;
         const indexOfFirstTodo = indexOfLastTodo - todosPerPage;
         const currentTodos = filteredTodos.slice(indexOfFirstTodo, indexOfLastTodo);
@@ -46,7 +52,7 @@ function TodoList() {
             <Pagination
                 paginate={ paginate }
                 todoPerPage={ todosPerPage }
-                totalTodos={ todos.length }
+                totalTodos={ filteredTodos.length }
                 currentPage={ currentPage }
             />
             <button onClick={() => navigate('/add')}>Add new Todo</button>
