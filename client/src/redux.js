@@ -28,7 +28,7 @@ export const TodoListSlice = createSlice({
 export const { addTodo, updateTodo } = TodoListSlice.actions;
 
 export const initTodos = async () => {
-    const res = await fetch('todos');
+    const res = await fetch('http://localhost:3000/todos');
     const todos = await res.json();
     todos.forEach(todo => store.dispatch(addTodo(todo)))
 }
