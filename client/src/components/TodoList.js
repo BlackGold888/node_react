@@ -6,14 +6,21 @@ import Todo from './Todo';
 
 function TodoList() {
     const todos = useSelector((state) => state.todos);
+    const login = useSelector((state) => state.isLogin);
+
+    const [statusFilter, setStatusFilter] = useState(false);
     const [filteredTodos, setFilteredTodos] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [todosPerPage] = useState(3);
 
+    const handleStatusFilter = (e) => searchTodos(e.target.checked.toString());
+
     useEffect(() => {
         if (!filteredTodos.length && todos.length) {
             setFilteredTodos(todos);
+            console.log(todos.isLogin);
         }
+
     })
 
     const navigate = useNavigate();
@@ -23,7 +30,7 @@ function TodoList() {
     const searchTodos = (query) => {
         let tempArr = [];
         if (query.length > 0) {
-            tempArr = filteredTodos.filter(todo => todo.name.includes(query) || todo.email.includes(query) || todo.text.includes(query));
+            tempArr = filteredTodos.filter(todo => todo.name.includes(query) || todo.email.includes(query) || todo.text.includes(query) || todo.status.toString().includes(query));
         }else {
             tempArr = [...todos];
         }
@@ -42,7 +49,9 @@ function TodoList() {
             <ul className={ 'todo_container' }>
                 <li>
                     <input type="text" onChange={ (e) => searchTodos(e.target.value) } placeholder={ 'search' }/>
+                    Filter By status: <input type="checkbox" onChange={ (e) => handleStatusFilter(e) }/>
                 </li>
+
                 { renderTodos() }
             </ul>
             <Pagination
@@ -51,7 +60,7 @@ function TodoList() {
                 totalTodos={ filteredTodos.length }
                 currentPage={ currentPage }
             />
-            <button onClick={() => navigate('/add')}>Add new Todo</button>
+            {login.status ? '' : <button onClick={ () => navigate('/login') }>Login</button>}
         </>
 
     );

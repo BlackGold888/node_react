@@ -125,6 +125,11 @@ button {
     margin: 10px 0;
 }
 
+.btn-edit{
+    padding: 1px;
+    margin: 0;
+}
+
 @keyframes App-logo-spin {
     from {
         transform: rotate(0deg);
