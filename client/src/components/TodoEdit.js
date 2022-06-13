@@ -1,16 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useLocation, useNavigate } from 'react-router-dom';
-import {useDispatch} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { updateTodo } from '../redux';
 
 function TodoEdit() {
     const {state} = useLocation();
-    const dispatch = useDispatch();
-    const { name, email, text, id, status } = state;
+    const { name, email, text, id, status } = state ?? {};
 
+    const dispatch = useDispatch();
+    const login = useSelector((state) => state.isLogin);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!login.status) {
+            navigate('/login');
+        }
+    }
+    , [login.status]);
+
     const [newName, setName] = useState(name);
     const [newEmail, setEmail] = useState(email);
     const [newText, setText] = useState(text);
@@ -39,6 +48,7 @@ function TodoEdit() {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
+                    'Authorization': `Bearer ${login.token}`
                 },
                 body: JSON.stringify({
                     name: newName,
