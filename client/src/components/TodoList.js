@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Pagination from './Pagination';
 import { useNavigate } from 'react-router-dom';
+import Todo from './Todo';
 
 function TodoList() {
     const todos = useSelector((state) => state.todos);
@@ -34,12 +35,7 @@ function TodoList() {
         const indexOfLastTodo = currentPage * todosPerPage;
         const indexOfFirstTodo = indexOfLastTodo - todosPerPage;
         const currentTodos = filteredTodos.slice(indexOfFirstTodo, indexOfLastTodo);
-        return currentTodos.map((todo, index) => <li key={ index } className={ 'todo' }>
-            <p>Name: { todo.name }</p>
-            <p>Email: { todo.email }</p>
-            <p>Text: { todo.text }</p>
-            <p>Status: <input type="checkbox" checked={ todo.status } readOnly={ true }/></p>
-        </li>);
+        return currentTodos.map((todo, index) => <Todo key={index} todo={todo} />);
     };
     return (
         <>
