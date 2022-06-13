@@ -13,9 +13,6 @@ export const TodoListSlice = createSlice({
         addTodo: (state, action) => {
             state.todos.push(action.payload);
         },
-        changeLoginStatus: (state, action) => {
-            state.isLogin = action.payload
-        },
         updateTodo: (state, action) => {
             state.todos = state.todos.map(todo => {
                 if (todo.id === action.payload.id) {
@@ -28,7 +25,7 @@ export const TodoListSlice = createSlice({
     }
 })
 
-export const { addTodo, changeLoginStatus, updateTodo } = TodoListSlice.actions;
+export const { addTodo, updateTodo } = TodoListSlice.actions;
 
 export const initTodos = async () => {
     const res = await fetch('todos');

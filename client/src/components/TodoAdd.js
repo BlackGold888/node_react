@@ -51,7 +51,7 @@ function TodoAdd() {
             })
                 .then(res => res.json())
                 .then(data => {
-                    if (!data.status) {
+                    if (data.error) {
                         toast.error(data.message);
                         navigate('/');
                     } else {
