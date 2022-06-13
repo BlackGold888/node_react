@@ -1,18 +1,14 @@
 'use strict'
 import dotenv from 'dotenv';
 import { readdirSync } from 'fs'
-import { basename as _basename, join, dirname } from 'path'
+import { basename as _basename, dirname } from 'path'
 import Sequelize, { DataTypes } from 'sequelize';
 import {fileURLToPath} from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const basename = _basename(__filename);
-const env = process.env.NODE_ENV || 'development'
 dotenv.config();
 
-// const config = require(__dirname + '/../config/config.json')[env]
 const db = {}
-console.log(process.env.DB_NAME);
 let sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
     host: "127.0.0.1",
     dialect: "mysql", });

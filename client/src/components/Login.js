@@ -1,17 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
-import { store } from '../redux';
 import { useNavigate } from 'react-router-dom';
-import { changeLoginStatus } from '../redux';
 
-function TodoAdd(props) {
+function TodoAdd() {
     const navigate = useNavigate();
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
 
     const handleLogin = (e) => setLogin(e.target.value);
     const handlePassword = (e) => setPassword(e.target.value);
+
+    useEffect(() => {
+        if (localStorage.getItem('token')) {
+            navigate('/');
+        }
+    });
 
     const signIn = () => {
         if (login.length < 3) {
@@ -32,15 +36,13 @@ function TodoAdd(props) {
             })
                 .then(res => res.json())
                 .then(data => {
-                    if (data.error) {
-                        toast.error(data.error);
+                    if (!data.status) {
+                        toast.error(data.message);
                     } else {
-                        store.dispatch(changeLoginStatus(data));
+                        localStorage.setItem('token', data.token);
                         navigate('/');
                     }
                 });
-            // store.dispatch(addTodo({ name, email, text, status: false, }));
-            // toast.success('Задача добавлена');
         }
     }
 

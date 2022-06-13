@@ -1,17 +1,14 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { updateTodo } from '../redux';
+import { addTodo } from '../redux';
 import { validateEmail } from '../App';
 
-function TodoEdit() {
-    const {state} = useLocation();
-    const { name, email, text, id, status } = state ?? {};
-
-    const dispatch = useDispatch();
+function TodoAdd() {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (!localStorage.getItem('token')) {
@@ -20,25 +17,25 @@ function TodoEdit() {
     }
     );
 
-    const [newName, setName] = useState(name);
-    const [newEmail, setEmail] = useState(email);
-    const [newText, setText] = useState(text);
-    const [newStatus, setStatus] = useState(status);
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [text, setText] = useState('');
+    const [status, setStatus] = useState(false);
 
     const handleName = (e) => setName(e.target.value);
     const handleEmail = (e) => setEmail(e.target.value);
     const handleText = (e) => setText(e.target.value);
     const handleStatus = (e) => setStatus(e.target.checked);
 
-    const save = () => {
-        if (newName.length < 3) {
+    const saveTodo = () => {
+        if (name.length < 3) {
             toast.error('Мин длина Имени 3 символа');
-        } else if (!validateEmail(newEmail)) {
+        } else if (!validateEmail(email)) {
             toast.error('Не корректно введена почта');
-        } else if (newText.length < 3) {
+        } else if (text.length < 3) {
             toast.error('Мин длина Текста 3 символа');
         } else {
-            fetch('http://localhost:3000/edit', {
+            fetch('http://localhost:3000/addTodo', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -46,11 +43,10 @@ function TodoEdit() {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },
                 body: JSON.stringify({
-                    name: newName,
-                    email: newEmail,
-                    text: newText,
-                    status: newStatus,
-                    id: id
+                    name: name,
+                    email: email,
+                    text: text,
+                    status: status,
                 })
             })
                 .then(res => res.json())
@@ -59,8 +55,8 @@ function TodoEdit() {
                         toast.error(data.message);
                         navigate('/');
                     } else {
-                        toast.success('Задача обновлена');
-                        dispatch(updateTodo(data));
+                        toast.success('Задача добавлена');
+                        dispatch(addTodo(data));
                         navigate('/');
                     }
                 });
@@ -73,10 +69,10 @@ function TodoEdit() {
             <input type="text" onChange={ (e) => handleEmail(e) } defaultValue={email} placeholder={ 'Email' }/>
             <input type="text" onChange={ (e) => handleText(e) } defaultValue={text} placeholder={ 'Todo text' }/>
             Status: <input type="checkbox" onChange={ (e) => handleStatus(e) } defaultChecked={status}/>
-            <button onClick={ () => save() }>Save</button>
+            <button onClick={ () => saveTodo() }>Save</button>
             <button onClick={ () => navigate(-1) }>BACK</button>
         </div>
     );
 }
 
-export default TodoEdit;
+export default TodoAdd;

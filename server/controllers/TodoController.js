@@ -14,13 +14,11 @@ const addTodo = async (req, res) => {
         status
     });
     res.status(200).json(todo);
-    console.log(name, email, text, status);
 }
 
 const updateTodo = async (req, res) => {
     const { id, name, email, text, status } = req.body;
-    console.log(id, name, email, text, status);
-    const todo = await db.Todo.update({
+    await db.Todo.update({
         name,
         email,
         text,

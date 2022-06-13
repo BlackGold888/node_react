@@ -3,8 +3,7 @@ import jwt from 'jsonwebtoken';
 export const auth = (req, res, next) => {
     const bearerHeader = req.headers['authorization']
     const token = bearerHeader && bearerHeader.split(' ')[1];
-    console.log(token);
-    if (token == null) return res.status(401).json({
+    if (token == null || token === 'null') return res.status(401).json({
         status: false,
         message: 'Access denied. No token provided.'
     });

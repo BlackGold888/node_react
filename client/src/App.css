@@ -75,14 +75,15 @@ button {
     width: 100%;
     border-radius: 30px;
     flex-direction: column;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
     transition: all .3s;
     padding: 10px;
+    position: relative;
 
 }
 
 .todo:hover {
-    box-shadow: rgb(0, 0, 255) 0px 0px 10px 1px;
+    box-shadow: rgb(0, 0, 255) 0 0 10px 1px;
     transition: all .3s;
 }
 
@@ -128,6 +129,13 @@ button {
 .btn-edit{
     padding: 1px;
     margin: 0;
+}
+
+.marker {
+    top: 15px;
+    left: 15px;
+    color: #00ff00;
+    display: block;
 }
 
 @keyframes App-logo-spin {
